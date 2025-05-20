@@ -205,12 +205,168 @@ const CardTitle = styled.h2`
   padding-bottom: 10px;
 `;
 
+// Novos componentes para submódulos de Produtos
+const ProductHeader = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+`;
+
+const BackButton = styled.button`
+  background-color: #f0f0f0;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  
+  i {
+    margin-right: 5px;
+  }
+  
+  &:hover {
+    background-color: #e0e0e0;
+  }
+`;
+
+const TabsContainer = styled.div`
+  display: flex;
+  border-bottom: 1px solid #ddd;
+  margin-bottom: 20px;
+`;
+
+const Tab = styled.div`
+  padding: 10px 20px;
+  cursor: pointer;
+  border: 1px solid ${props => props.active ? '#00a651' : 'transparent'};
+  border-bottom: ${props => props.active ? '2px solid #00a651' : 'none'};
+  background-color: ${props => props.active ? 'white' : 'transparent'};
+  color: ${props => props.active ? '#00a651' : '#333'};
+  font-weight: ${props => props.active ? 'bold' : 'normal'};
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+  margin-right: 5px;
+  
+  &:hover {
+    background-color: ${props => props.active ? 'white' : '#f5f5f5'};
+  }
+`;
+
+const FormSection = styled.div`
+  background-color: white;
+  border-radius: 5px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+`;
+
+const SectionTitle = styled.h3`
+  font-size: 16px;
+  color: #333;
+  margin-top: 0;
+  margin-bottom: 15px;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 10px;
+`;
+
+const FormRow = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0 -10px;
+  margin-bottom: 15px;
+`;
+
+const FormColumn = styled.div`
+  flex: ${props => props.width || 1};
+  padding: 0 10px;
+  min-width: 200px;
+`;
+
+const Select = styled.select`
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 16px;
+  outline: none;
+  box-sizing: border-box;
+  
+  &:focus {
+    border-color: #00a651;
+  }
+`;
+
+const TextArea = styled.textarea`
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 16px;
+  outline: none;
+  box-sizing: border-box;
+  min-height: 100px;
+  resize: vertical;
+  
+  &:focus {
+    border-color: #00a651;
+  }
+`;
+
+const Checkbox = styled.div`
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  
+  input {
+    margin-right: 10px;
+  }
+`;
+
+const HelpText = styled.div`
+  font-size: 12px;
+  color: #666;
+  margin-top: 5px;
+  font-style: italic;
+`;
+
+const ActionButton = styled.button`
+  background-color: #00a651;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  margin-right: 10px;
+  
+  &:hover {
+    background-color: #008c44;
+  }
+`;
+
+const CancelButton = styled.button`
+  background-color: #f0f0f0;
+  color: #333;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  
+  &:hover {
+    background-color: #e0e0e0;
+  }
+`;
+
 function App() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [activeModule, setActiveModule] = useState('home');
+  const [activeProductTab, setActiveProductTab] = useState('principal');
+  const [showProductForm, setShowProductForm] = useState(false);
 
   const handleLogin = (e) => {
     e.preventDefault();
@@ -235,6 +391,293 @@ function App() {
     setUsername('');
     setPassword('');
     setActiveModule('home');
+    setShowProductForm(false);
+  };
+
+  const renderProductContent = () => {
+    if (showProductForm) {
+      return (
+        <>
+          <ProductHeader>
+            <BackButton onClick={() => setShowProductForm(false)}>
+              <i className="fas fa-arrow-left"></i> Voltar
+            </BackButton>
+            <div>
+              <ActionButton>Salvar</ActionButton>
+              <CancelButton onClick={() => setShowProductForm(false)}>Cancelar</CancelButton>
+            </div>
+          </ProductHeader>
+          
+          <TabsContainer>
+            <Tab 
+              active={activeProductTab === 'principal'} 
+              onClick={() => setActiveProductTab('principal')}
+            >
+              Principal
+            </Tab>
+            <Tab 
+              active={activeProductTab === 'informacoes'} 
+              onClick={() => setActiveProductTab('informacoes')}
+            >
+              Informações do Produto
+            </Tab>
+            <Tab 
+              active={activeProductTab === 'venda'} 
+              onClick={() => setActiveProductTab('venda')}
+            >
+              Configurações de Venda
+            </Tab>
+            <Tab 
+              active={activeProductTab === 'frete'} 
+              onClick={() => setActiveProductTab('frete')}
+            >
+              Configurações de Frete
+            </Tab>
+            <Tab 
+              active={activeProductTab === 'impostos'} 
+              onClick={() => setActiveProductTab('impostos')}
+            >
+              Configurações de Impostos
+            </Tab>
+            <Tab 
+              active={activeProductTab === 'contabeis'} 
+              onClick={() => setActiveProductTab('contabeis')}
+            >
+              Configurações Contábeis
+            </Tab>
+            <Tab 
+              active={activeProductTab === 'fotos'} 
+              onClick={() => setActiveProductTab('fotos')}
+            >
+              Fotos do Produto
+            </Tab>
+          </TabsContainer>
+          
+          {activeProductTab === 'principal' && (
+            <FormSection>
+              <SectionTitle>Informações Principais</SectionTitle>
+              <HelpText>( * ) Informações obrigatórias.</HelpText>
+              
+              <FormRow>
+                <FormColumn>
+                  <Label>Tipo de Produto *</Label>
+                  <Select>
+                    <option value="">...</option>
+                    <option value="flores">Flores In Natura</option>
+                    <option value="extrato">Extrato Vegetal</option>
+                  </Select>
+                </FormColumn>
+                
+                <FormColumn>
+                  <Label>Status</Label>
+                  <Select>
+                    <option value="ativo">Ativo</option>
+                    <option value="desativado">Desativado</option>
+                  </Select>
+                </FormColumn>
+              </FormRow>
+              
+              <FormRow>
+                <FormColumn>
+                  <Label>Produto Online?</Label>
+                  <Select>
+                    <option value="sim">Sim</option>
+                    <option value="nao">Não</option>
+                  </Select>
+                </FormColumn>
+                
+                <FormColumn>
+                  <Label>Produto Restrito?</Label>
+                  <Select>
+                    <option value="">...</option>
+                    <option value="sim">Sim</option>
+                    <option value="nao">Não</option>
+                  </Select>
+                </FormColumn>
+              </FormRow>
+              
+              <FormRow>
+                <FormColumn width={2}>
+                  <Label>Nome do Produto *</Label>
+                  <Input type="text" />
+                </FormColumn>
+              </FormRow>
+              
+              <FormRow>
+                <FormColumn width={2}>
+                  <Label>Descrição Resumida</Label>
+                  <TextArea />
+                </FormColumn>
+              </FormRow>
+              
+              <FormRow>
+                <FormColumn width={2}>
+                  <Label>Descrição Completa</Label>
+                  <TextArea />
+                </FormColumn>
+              </FormRow>
+              
+              <FormRow>
+                <FormColumn>
+                  <Label>Fornecedor</Label>
+                  <Select>
+                    <option value="">...</option>
+                    <option value="cannapis">CANNAPIS</option>
+                  </Select>
+                </FormColumn>
+              </FormRow>
+            </FormSection>
+          )}
+          
+          {activeProductTab === 'venda' && (
+            <FormSection>
+              <SectionTitle>Configurações de Venda</SectionTitle>
+              
+              <FormRow>
+                <FormColumn>
+                  <Checkbox>
+                    <input type="checkbox" id="disponivel" />
+                    <Label htmlFor="disponivel">Disponível para Todos</Label>
+                  </Checkbox>
+                  
+                  <Checkbox>
+                    <input type="checkbox" id="somente_associados" />
+                    <Label htmlFor="somente_associados">Somente Associados</Label>
+                  </Checkbox>
+                  
+                  <Checkbox>
+                    <input type="checkbox" id="somente_adimplentes" />
+                    <Label htmlFor="somente_adimplentes">Somente Adimplentes</Label>
+                  </Checkbox>
+                </FormColumn>
+                
+                <FormColumn>
+                  <Label>Segmentar por tipo de associado</Label>
+                  <Select>
+                    <option value="nenhum">Nenhum</option>
+                  </Select>
+                  <HelpText>Preencha somente caso o produto seja exclusivo para alguns tipos de associados</HelpText>
+                </FormColumn>
+              </FormRow>
+              
+              <FormRow>
+                <FormColumn>
+                  <Label>É uma Cortesia?</Label>
+                  <Select>
+                    <option value="">...</option>
+                    <option value="sim">Sim</option>
+                    <option value="nao">Não</option>
+                  </Select>
+                </FormColumn>
+                
+                <FormColumn>
+                  <Label>Permitir valor configurável?</Label>
+                  <Select>
+                    <option value="">...</option>
+                    <option value="sim">Sim</option>
+                    <option value="nao">Não</option>
+                  </Select>
+                  <HelpText>1 - O campo de valor configurável, permitirá alterar o valor do produto/serviço no ato do pedido.</HelpText>
+                  <HelpText>2 - Informe apenas um dos dois campos de desconto. Caso informe ambos, o sistema irá considerar o valor absoluto.</HelpText>
+                </FormColumn>
+              </FormRow>
+              
+              <FormRow>
+                <FormColumn>
+                  <Label>Habilitar Controle de Estoque nos pedidos?</Label>
+                  <Select>
+                    <option value="">...</option>
+                    <option value="sim">Sim</option>
+                    <option value="nao">Não</option>
+                  </Select>
+                </FormColumn>
+                
+                <FormColumn>
+                  <Label>Qtde Limite por Pedido</Label>
+                  <Input type="number" />
+                </FormColumn>
+              </FormRow>
+            </FormSection>
+          )}
+          
+          {activeProductTab === 'frete' && (
+            <FormSection>
+              <SectionTitle>Configurações de Frete</SectionTitle>
+              
+              <FormRow>
+                <FormColumn>
+                  <Label>Tem Entrega?</Label>
+                  <Select>
+                    <option value="">...</option>
+                    <option value="sim">Sim</option>
+                    <option value="nao">Não</option>
+                  </Select>
+                </FormColumn>
+              </FormRow>
+            </FormSection>
+          )}
+          
+          {activeProductTab === 'impostos' && (
+            <FormSection>
+              <SectionTitle>Configurações de Impostos</SectionTitle>
+              
+              <FormRow>
+                <FormColumn>
+                  <Label>Inserir Impostos?</Label>
+                  <Select>
+                    <option value="">...</option>
+                    <option value="sim">Sim</option>
+                    <option value="nao">Não</option>
+                  </Select>
+                </FormColumn>
+              </FormRow>
+            </FormSection>
+          )}
+          
+          {activeProductTab === 'contabeis' && (
+            <FormSection>
+              <SectionTitle>Configurações Contábeis</SectionTitle>
+              
+              <FormRow>
+                <FormColumn>
+                  <Label>Código Contábil</Label>
+                  <Input type="text" />
+                </FormColumn>
+              </FormRow>
+            </FormSection>
+          )}
+          
+          {activeProductTab === 'fotos' && (
+            <FormSection>
+              <SectionTitle>Fotos do Produto</SectionTitle>
+              
+              <FormRow>
+                <FormColumn>
+                  <Button>Adicionar Foto</Button>
+                  <HelpText>Adicione fotos do produto para exibição no site.</HelpText>
+                </FormColumn>
+              </FormRow>
+            </FormSection>
+          )}
+        </>
+      );
+    }
+    
+    return (
+      <>
+        <ProductHeader>
+          <PageTitle>Produtos</PageTitle>
+          <ActionButton onClick={() => setShowProductForm(true)}>
+            <i className="fas fa-plus"></i> Novo Produto
+          </ActionButton>
+        </ProductHeader>
+        
+        <Card>
+          <CardTitle>Lista de Produtos</CardTitle>
+          <p>Nenhum produto cadastrado. Clique em "Novo Produto" para adicionar.</p>
+        </Card>
+      </>
+    );
   };
 
   if (!isLoggedIn) {
@@ -288,35 +731,50 @@ function App() {
         
         <MenuItem 
           active={activeModule === 'home'} 
-          onClick={() => setActiveModule('home')}
+          onClick={() => {
+            setActiveModule('home');
+            setShowProductForm(false);
+          }}
         >
           <i className="fas fa-home"></i> Home
         </MenuItem>
         
         <MenuItem 
           active={activeModule === 'associados'} 
-          onClick={() => setActiveModule('associados')}
+          onClick={() => {
+            setActiveModule('associados');
+            setShowProductForm(false);
+          }}
         >
           <i className="fas fa-users"></i> Associados
         </MenuItem>
         
         <MenuItem 
           active={activeModule === 'produtos'} 
-          onClick={() => setActiveModule('produtos')}
+          onClick={() => {
+            setActiveModule('produtos');
+            setShowProductForm(false);
+          }}
         >
           <i className="fas fa-box"></i> Produtos
         </MenuItem>
         
         <MenuItem 
           active={activeModule === 'pedidos'} 
-          onClick={() => setActiveModule('pedidos')}
+          onClick={() => {
+            setActiveModule('pedidos');
+            setShowProductForm(false);
+          }}
         >
           <i className="fas fa-shopping-cart"></i> Pedidos
         </MenuItem>
         
         <MenuItem 
           active={activeModule === 'acesso'} 
-          onClick={() => setActiveModule('acesso')}
+          onClick={() => {
+            setActiveModule('acesso');
+            setShowProductForm(false);
+          }}
         >
           <i className="fas fa-lock"></i> Acesso
         </MenuItem>
@@ -327,23 +785,16 @@ function App() {
       </Sidebar>
       
       <MainContent>
-        <Header>
-          <PageTitle>
-            {activeModule === 'home' && 'Painel de Controle'}
-            {activeModule === 'associados' && 'Associados'}
-            {activeModule === 'produtos' && 'Produtos'}
-            {activeModule === 'pedidos' && 'Pedidos'}
-            {activeModule === 'acesso' && 'Acesso'}
-          </PageTitle>
-          
-          <UserInfo>
-            <span>Usuário: {username}</span>
-          </UserInfo>
-        </Header>
-        
-        <DashboardContent>
-          {activeModule === 'home' && (
-            <>
+        {activeModule === 'home' && (
+          <>
+            <Header>
+              <PageTitle>Painel de Controle</PageTitle>
+              <UserInfo>
+                <span>Usuário: {username}</span>
+              </UserInfo>
+            </Header>
+            
+            <DashboardContent>
               <Card>
                 <CardTitle>Resumo de associados</CardTitle>
                 <p>Conteúdo do painel de controle</p>
@@ -358,37 +809,70 @@ function App() {
                 <CardTitle>Resumo de Produção dos Pedidos</CardTitle>
                 <p>Conteúdo do painel de controle</p>
               </Card>
-            </>
-          )}
-          
-          {activeModule === 'associados' && (
+            </DashboardContent>
+          </>
+        )}
+        
+        {activeModule === 'associados' && (
+          <>
+            <Header>
+              <PageTitle>Associados</PageTitle>
+              <UserInfo>
+                <span>Usuário: {username}</span>
+              </UserInfo>
+            </Header>
+            
             <Card>
               <CardTitle>Gerenciamento de Associados</CardTitle>
               <p>Conteúdo da página de associados</p>
             </Card>
-          )}
-          
-          {activeModule === 'produtos' && (
-            <Card>
-              <CardTitle>Gerenciamento de Produtos</CardTitle>
-              <p>Conteúdo da página de produtos</p>
-            </Card>
-          )}
-          
-          {activeModule === 'pedidos' && (
+          </>
+        )}
+        
+        {activeModule === 'produtos' && (
+          <>
+            <Header>
+              <PageTitle>Produtos</PageTitle>
+              <UserInfo>
+                <span>Usuário: {username}</span>
+              </UserInfo>
+            </Header>
+            
+            {renderProductContent()}
+          </>
+        )}
+        
+        {activeModule === 'pedidos' && (
+          <>
+            <Header>
+              <PageTitle>Pedidos</PageTitle>
+              <UserInfo>
+                <span>Usuário: {username}</span>
+              </UserInfo>
+            </Header>
+            
             <Card>
               <CardTitle>Gerenciamento de Pedidos</CardTitle>
               <p>Conteúdo da página de pedidos</p>
             </Card>
-          )}
-          
-          {activeModule === 'acesso' && (
+          </>
+        )}
+        
+        {activeModule === 'acesso' && (
+          <>
+            <Header>
+              <PageTitle>Controle de Acesso</PageTitle>
+              <UserInfo>
+                <span>Usuário: {username}</span>
+              </UserInfo>
+            </Header>
+            
             <Card>
               <CardTitle>Controle de Acesso</CardTitle>
               <p>Conteúdo da página de acesso</p>
             </Card>
-          )}
-        </DashboardContent>
+          </>
+        )}
       </MainContent>
     </AppContainer>
   );
