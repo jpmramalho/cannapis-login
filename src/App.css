@@ -1,0 +1,11 @@
+.App {
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  /* Estilos responsivos para dispositivos móveis */
+  .login-card {
+    width: 90% !important;
+    max-width: 350px;
+  }
+}
